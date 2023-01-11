@@ -13,6 +13,23 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
 
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+
+tags = db.Table('tags',
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
+    db.Column('page_id', db.Integer, db.ForeignKey('quote.id'), primary_key=True)
+)
+
+
+class Quote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String, unique=True, nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('author.id'),nullable=False)
+    tags = db.relationship('Tag', secondary=tags, lazy='subquery', backref=db.backref('quotes', lazy=True))
+
+
 with app.app_context():
     db.create_all()
 
