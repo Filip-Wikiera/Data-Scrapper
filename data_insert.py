@@ -41,5 +41,29 @@ with app.app_context():
             db.session.add(author)
             db.session.commit()
 
-    for autor in Author.query.all():
-        print(autor.name)
+    i=0
+    for qoute in data[0]:
+        author_id = Author.query.filter_by(name=data[1][i]).first().id
+        quote = Quote(text=qoute, author_id = author_id)
+        uniqe = Quote.query.filter_by(text=quote.text).first()
+        if uniqe is None:
+            db.session.add(quote)
+        else:
+            quote = uniqe
+        for tag in data[2][i]:
+            tag = Tag(name = tag)
+            uniqe = Tag.query.filter_by(name=tag.name).first()
+            if uniqe is None:
+                db.session.add(tag)
+            else:
+                tag = uniqe
+            quote.tags.append(tag)
+            db.session.commit()
+        i += 1
+
+    for quote in Quote.query.all():
+        print(quote.text)
+        print(Author.query.filter_by(id=quote.author_id).first().name)
+        for tag in quote.tags:
+            print(tag.name)
+        print("\n\n")

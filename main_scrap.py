@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 def collect_data():
     start_page = 1
-    end_page = 1
+    end_page = 10
 
     collectet_data = [[],[],[]]
 
