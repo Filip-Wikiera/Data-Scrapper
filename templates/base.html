@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Greatest quotes</title>
+    <!-- https://getbootstrap.com/docs/4.0/getting-started/introduction/ -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light p-3 mb-2 bg-secondary text-white">
+  <a class="navbar-brand" href="#">Menu</a>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Cytaty</a>
+      </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="/search/">Wyszukiwarka</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div style="float:left;">
+{% block content %}{% endblock %}
+</div>
+</body>
+</html>

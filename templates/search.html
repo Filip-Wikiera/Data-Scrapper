@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="margin-left:5%; margin-right:20%;">
+    <br><br><br>
+ <form class="w-25" action="{{ url_for('search')}}"method="post">
+      <div class="form-group">
+        <label>Szukaj:</label>
+        <input type="text" name="serach_text" class="form-control" size="500px">
+      </div>
+Przeszukaj dla:<br>
+     <div class="form-group">
+     <input type="radio" id="Cytat" name="choice" value="Cytat"
+             checked>
+      <label for="Cytat">Cytat</label>
+    </div>
+
+    <div class="form-group">
+      <input type="radio" id="Autor" name="choice" value="Autor">
+      <label for="Autor">Autor</label>
+    </div>
+
+     <div class="form-group">
+      <input type="radio" id="Tag" name="choice" value="Tag">
+      <label for="Tag">Tag</label>
+    </div>
+
+</fieldset>
+
+        <input type="submit" value="Wyślij" class="btn btn-primary">
+    </form>
+    {% if quote != "empty" %}
+<br><br><br><br><br><br>
+    {% for quote in Quote %}
+
+            <p class="h2" >{{ quote.text }}
+    <small class="text-muted"><br>{{ quote.author.name }}</small>
+            <small class="h5">
+            {% for tag in quote.tags %}
+                <small class="container" style="background-color:powderblue;">
+            {{ tag.name }}
+    </small> &nbsp;&nbsp;
+            {% endfor %}
+    </small>
+    </p>
+    <br><br>
+        {% endfor %}
+    <br><br>
+    {% endif %}
+
+</div>
+{% endblock %}

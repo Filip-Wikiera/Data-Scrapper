@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="" style="margin-left:5%; margin-right:20%;">
+    <br><br>
+        {% for quote in Quote %}
+
+            <p class="h2" >{{ quote.text }}
+    <small class="text-muted"><br>{{ quote.author.name }}</small>
+            <small class="h5">
+            {% for tag in quote.tags %}
+                <small class="container" style="background-color:powderblue;">
+            {{ tag.name }}
+    </small> &nbsp;&nbsp;
+            {% endfor %}
+    </small>
+    </p>
+    <br><br>
+        {% endfor %}
+    <br><br>
+    {% if page_number > 1 %}
+    <a href={{'/page/'+(page_number-1).__str__()+'/'}}>Poprzednia strona</a>
+    {% endif %}
+    <a style="float:right;" href={{'/page/'+(page_number+1).__str__()+'/'}} >Nastepna strona</a>
+    <br><br><br><br>
+</div>
+{% endblock %}

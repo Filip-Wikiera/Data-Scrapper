@@ -4,14 +4,12 @@ from bs4 import BeautifulSoup
 def collect_data():
     start_page = 1
     end_page = 10
-
     collectet_data = [[],[],[]]
 
     i = start_page
     while i < end_page+1:
         web_page = requests.get(f"https://quotes.toscrape.com/page/{i}")
         soup = BeautifulSoup(web_page.text,features="html.parser")
-
 
         def extract_text(input_soup: BeautifulSoup, searched_class: str, type: str):
             text = input_soup.find_all(type, limit=1, class_=searched_class)
