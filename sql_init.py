@@ -14,7 +14,7 @@ class Author(db.Model):
 
 tags = db.Table('tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
-    db.Column('page_id', db.Integer, db.ForeignKey('quote.id'), primary_key=True)
+    db.Column('quote_id', db.Integer, db.ForeignKey('quote.id'), primary_key=True)
 )
 
 class Tag(db.Model):
