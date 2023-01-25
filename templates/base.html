@@ -21,10 +21,40 @@
       <li class="nav-item">
         <a class="nav-link" href="/statistics/">Statystyki</a>
       </li>
+         {% if current_user.is_anonymous %}
+      <li class="nav-item">
+        <a class="nav-link" href="/login/">Zaloguj</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/register/">Rejestracja</a>
+      </li>
+        {% else %}
+        <li class="nav-item">
+        <a class="nav-link" href="/logout/">Wyloguj</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/Profil/">Profil</a>
+      </li>
+         {% endif %}
+
+        {% if not current_user.is_anonymous %}
+        <li class="nav-item">
+        <a class="nav-link" >Uzytkownik: {{current_user.name}}</a>
+      </li>
+        {% endif %}
     </ul>
   </div>
 </nav>
 <div style="float:left;">
+  {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
 {% block content %}{% endblock %}
 </div>
 </body>

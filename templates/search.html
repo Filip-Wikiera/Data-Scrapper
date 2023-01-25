@@ -1,33 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div style="margin-left:5%; margin-right:20%;">
-    <br><br><br>
- <form class="w-25" action="{{ url_for('search')}}"method="post">
-      <div class="form-group">
-        <label>Szukaj:</label>
-        <input type="text" name="serach_text" class="form-control" size="500px">
-      </div>
-Przeszukaj dla:<br>
-     <div class="form-group">
-     <input type="radio" id="Cytat" name="choice" value="Cytat"
-             checked>
-      <label for="Cytat">Cytat</label>
-    </div>
+<div style="margin-left:5%; margin-right:10%; margin-top:5%;" class="container">
+ <h1>Szukaj: </h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.text.label }}<br>
+            {{ form.text(size=32) }}<br>
 
-    <div class="form-group">
-      <input type="radio" id="Autor" name="choice" value="Autor">
-      <label for="Autor">Autor</label>
-    </div>
+        {% for subfield in form.choice %}
+    <tr>
+        <td>{{ subfield }}</td>
+        <td>{{ subfield.label }}</td>
+    </tr>
+{% endfor %}
+        <p>{{ form.submit() }}</p>
 
-     <div class="form-group">
-      <input type="radio" id="Tag" name="choice" value="Tag">
-      <label for="Tag">Tag</label>
-    </div>
-
-</fieldset>
-
-        <input type="submit" value="Wyślij" class="btn btn-primary">
     </form>
     {% if quote != "empty" %}
 <br><br><br><br><br><br>

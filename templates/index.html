@@ -20,7 +20,9 @@
     {% if page_number > 1 %}
     <a href={{'/page/'+(page_number-1).__str__()+'/'}}>Poprzednia strona</a>
     {% endif %}
+    {% if page_number < max_page %}
     <a style="float:right;" href={{'/page/'+(page_number+1).__str__()+'/'}} >Nastepna strona</a>
+    {% endif %}
     <br><br><br><br>
 </div>
 {% endblock %}

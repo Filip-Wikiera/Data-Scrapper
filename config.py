@@ -1,11 +1,23 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from flask_login import LoginManager
 
-db = SQLAlchemy()
+
+
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+app.config['SECRET_KEY'] = 'tajne-haslo'
+
+db = SQLAlchemy()
 db.init_app(app)
 
+login = LoginManager(app)
+login.login_view = 'login'
+
+quotes_on_page = 10
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
@@ -27,3 +39,16 @@ class Quote(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'),nullable=False)
     tags = db.relationship('Tag', secondary=tags, backref=db.backref('quotes', lazy=True))
     author = db.relationship("Author", back_populates="quotes")
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))

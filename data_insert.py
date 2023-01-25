@@ -1,5 +1,5 @@
 from main_scrap import collect_data
-from sql_init import Author,Quote,Tag,db,app
+from config import Author,Quote,Tag,db,app
 
 data = collect_data()
 
