@@ -23,7 +23,7 @@
     {% for quote in Quote %}
 
             <p class="h2" >{{ quote.text }}
-    <small class="text-muted"><br>{{ quote.author.name }}</small>
+    <small class="text-muted"><a href="/about/{{quote.author.id}}/"><br>{{ quote.author.name }}</a></small>
             <small class="h5">
             {% for tag in quote.tags %}
                 <small class="container" style="background-color:powderblue;">

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="" style="margin-left:5%; margin-right:20%;">
+    <br><br>
+    <h1>Ulubione cytaty {{current_user.name}}:</h1>
+    <br><br>
+    {% if Quote != "None" %}
+        {% for quote in Quote %}
+
+            <p class="h2" >{{ quote.text }}
+    <small class="text-muted"><br>
+        <a href="/about/{{quote.author.id}}/">{{ quote.author.name }}
+        </a></small>
+            <small class="h5">
+            {% for tag in quote.tags %}
+                <small class="container" style="background-color:powderblue;">
+            {{ tag.name }}
+    </small>&nbsp;&nbsp;
+            {% endfor %}
+    </small>
+
+                <form>
+                <a href="/unfavorite/{{quote.id}}/"><input type="button" value="Usun z ulubionych!"></a></form>
+
+
+    <br><br>
+        {% endfor %}
+    {% else %}
+    <br><br>
+    <h1>Uzytownik nie posiada ulubionych cytatow!</h1>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -5,14 +5,26 @@
         {% for quote in Quote %}
 
             <p class="h2" >{{ quote.text }}
-    <small class="text-muted"><br>{{ quote.author.name }}</small>
+    <small class="text-muted"><br>
+        <a href="/about/{{quote.author.id}}/">{{ quote.author.name }}
+        </a></small>
             <small class="h5">
             {% for tag in quote.tags %}
                 <small class="container" style="background-color:powderblue;">
             {{ tag.name }}
-    </small> &nbsp;&nbsp;
+    </small>&nbsp;&nbsp;
             {% endfor %}
     </small>
+                {% if not current_user.is_anonymous %}
+                {% if quote in current_user.favorites %}
+                <form>
+                <a href="/unfavorite/{{quote.id}}/{{page_number}}/"><input type="button" value="Usun z ulubionych!"></a></form>
+                {% else %}
+                <form>
+                <a href="/favorite/{{quote.id}}/{{page_number}}/"><input type="button" value="Dodaj do ulubionych!"></a></form>
+                {% endif %}
+
+                {% endif %}
     </p>
     <br><br>
         {% endfor %}

@@ -5,19 +5,26 @@ data = collect_data()
 
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
 with app.app_context():
-    for author in data[1]:
-        author = Author(name = author)
-        uniqe = Author.query.filter_by(name=author.name).first()
+    table_lenght = len(data[1][0])
+    i = 0
+    while i+1 <= table_lenght:
+        author = Author(name = data[1][0][i],
+                        about = data[1][1][i],
+                        date_of_birth = data[1][2][i],
+                        place_of_birth = data[1][3][i])
+        uniqe = Author.query.filter_by(name=data[1][0][i]).first()
         if uniqe is None:
             db.session.add(author)
             db.session.commit()
+        i+=1
 
     i=0
     for qoute in data[0]:
-        author_id = Author.query.filter_by(name=data[1][i]).first().id
+        author_id = Author.query.filter_by(name=data[1][0][i]).first().id
         quote = Quote(text=qoute, author_id = author_id)
         uniqe = Quote.query.filter_by(text=quote.text).first()
         if uniqe is None:

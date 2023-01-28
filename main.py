@@ -1,11 +1,12 @@
 from flask import render_template, request, flash
-from config import Quote,app,quotes_on_page,User,db
+from config import Quote,app,quotes_on_page,User,db,Author
 from sqlalchemy import func,desc
 from forms import LoginForm, RegistrationForm, SearchForm
 from flask_login import logout_user, login_required, current_user,login_user
 
 with app.app_context():
     max_page = Quote.query.count()/quotes_on_page
+
 @app.route("/")
 def index():
     return render_template("index.html",
@@ -18,6 +19,13 @@ def quote_pages(page_number):
 
     quotes = Quote.query.filter(Quote.id > quotes_on_page * (page_number - 1),Quote.id <= quotes_on_page + (page_number - 1) * quotes_on_page)
     return render_template("index.html", Quote = quotes, page_number = page_number, max_page = max_page)
+@app.route("/about/<int:author_id>/")
+def about(author_id):
+    author = Author.query.filter(Author.id == author_id).first()
+    if author == None:
+        flash("Blad - brak autora!")
+        return index()
+    return render_template("about.html", author = author)
 @app.route("/search/",methods =["GET", "POST"])
 def search():
     form = SearchForm()
@@ -98,3 +106,42 @@ def register():
         flash(f"Utworzono konto dla uzytkownika: {user.name}")
         return login()
     return render_template('register.html', form=form)
+@app.route('/unfavorite/<int:quote_id>/<int:page>/')
+def remove_favorite(quote_id,page):
+    quote = Quote.query.filter(Quote.id == quote_id).first()
+    if quote == None:
+        flash("Blad cytatu!")
+    else:
+        flash("Usunieto cytat z ulubionych!")
+        current_user.favorites.remove(quote)
+        db.session.commit()
+    return quote_pages(page)
+@app.route('/unfavorite/<int:quote_id>/')
+def remove_favorite_profile(quote_id):
+    quote = Quote.query.filter(Quote.id == quote_id).first()
+    if quote == None:
+        flash("Blad cytatu!")
+    else:
+        flash("Usunieto cytat z ulubionych!")
+        current_user.favorites.remove(quote)
+        db.session.commit()
+    return profil()
+@app.route('/favorite/<int:quote_id>/<int:page>/')
+def add_favorite(quote_id,page):
+    quote = Quote.query.filter(Quote.id == quote_id).first()
+    if quote == None:
+        flash("Blad cytatu!")
+    else:
+        flash("Dodano cytat do ulubionych!")
+        current_user.favorites.append(quote)
+        db.session.commit()
+    return quote_pages(page)
+@app.route('/profil/')
+def profil():
+    if not current_user.is_authenticated:
+        flash("Niezalogowany uzytkownik!")
+        return index()
+    quotes = current_user.favorites
+    print(quotes)
+    if quotes == []: quotes = "None"
+    return render_template('profil.html', Quote = quotes)
