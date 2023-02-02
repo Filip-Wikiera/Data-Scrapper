@@ -1,5 +1,5 @@
 from flask import render_template, request, flash
-from config import Quote,app,quotes_on_page,User,db,Author
+from config import Quote,app,quotes_on_page,User,db,Author,Tag
 from sqlalchemy import func,desc
 from forms import LoginForm, RegistrationForm, SearchForm
 from flask_login import logout_user, login_required, current_user,login_user
@@ -22,7 +22,7 @@ def quote_pages(page_number):
 @app.route("/about/<int:author_id>/")
 def about(author_id):
     author = Author.query.filter(Author.id == author_id).first()
-    if author == None:
+    if not author:
         flash("Blad - brak autora!")
         return index()
     return render_template("about.html", author = author)
@@ -37,17 +37,20 @@ def search():
     elif where_to_search == "Autor":
         found_quotes = []
         for quote in Quote.query.all():
-            if serach_text in quote.author.name:
+            if serach_text.lower() in quote.author.name.lower():
                 found_quotes.append(quote)
         if found_quotes != []: return render_template("search.html", Quote=found_quotes, form=form)
     elif where_to_search == "Tag":
+        if Tag.query.where(Tag.name == serach_text).all() == []:
+            flash("Nie ma takiego tagu!")
+            return render_template("search.html", Quote="", form=form)
         found_quotes = []
         for quote in Quote.query.all():
             for tag in quote.tags:
                 if serach_text in tag.name and quote not in found_quotes:
                     found_quotes.append(quote)
         if found_quotes != []: return render_template("search.html", Quote=found_quotes, form=form)
-        return render_template("search.html", Quote=found_quotes)
+        return render_template("search.html", Quote=found_quotes,form=form)
     return render_template("search.html", Quote= "", form=form)
 @app.route("/statistics/")
 def statistics():
