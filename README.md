@@ -4,6 +4,7 @@
 ## - data scraping (main_scrap.py, zebranie bazy cytatów, autorów oraz tagów z strony internetowej)
 
 ## - wprowadzenie zebranych informacji do bazy danych SQL za pomocą SQLAlchemy wraz z odtworzeniem ich powiązań (data_insert)
+## - relacyjną bazę danych (SQLAlchemy) z wykorzystaniem relacji jeden do wielu oraz wiele do wielu (config)
 
 ## - oraz połącznie Pythona z HTML oraz CSS za pomocą Flaska (main.py)
 ## Strona posiada mozliwosc wyszukiwania cytatow po tresci, autorze oraz tagach. 
